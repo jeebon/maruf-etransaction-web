@@ -34,6 +34,9 @@ public class SummaryTransaction {
     private float unapplied;
 
     @Column(columnDefinition="Decimal(24,8)", nullable = true)
+    private float tax;
+
+    @Column(columnDefinition="Decimal(24,8)", nullable = true)
     private float valuationMargin;
 
     @Column(columnDefinition="Decimal(24,8)", nullable = true)
@@ -113,6 +116,14 @@ public class SummaryTransaction {
 
     public void setUnapplied(float unapplied) {
         this.unapplied = unapplied;
+    }
+
+    public float getTax() {
+        return tax;
+    }
+
+    public void setTax(float tax) {
+        this.tax = tax;
     }
 
     public float getValuationMargin() {

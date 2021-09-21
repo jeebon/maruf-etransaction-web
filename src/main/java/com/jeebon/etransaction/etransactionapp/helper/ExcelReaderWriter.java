@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+import org.apache.poi.ss.usermodel.CellType;
 
 public class ExcelReaderWriter {
 
@@ -69,6 +69,7 @@ public class ExcelReaderWriter {
             FileInputStream fis = new FileInputStream(file);
             XSSFWorkbook wb = new XSSFWorkbook(fis);
             XSSFSheet sheet = wb.getSheetAt(0);
+
             return sheet;
         } catch(Exception e) {
             e.printStackTrace();
@@ -81,12 +82,24 @@ public class ExcelReaderWriter {
         if(cell == null){
             return (float)0;
         }
-
+        System.out.println("cell.getCellType()");
+        System.out.println(cell.getCellType());
         switch (cell.getCellType()) {
             case STRING:
                 return Float.valueOf(cell.getStringCellValue());
             case NUMERIC:
                 return (float) cell.getNumericCellValue();
+            case FORMULA:
+                System.out.println("cell.getCachedFormulaResultType()");
+                System.out.println(cell.getCachedFormulaResultType());
+                switch (cell.getCachedFormulaResultType()) {
+                    case STRING:
+                        return Float.valueOf(cell.getStringCellValue());
+                    case NUMERIC:
+                        return (float) cell.getNumericCellValue();
+                    default:
+                        return (float)0;
+                }
             default:
                 return (float)0;
         }
@@ -98,11 +111,25 @@ public class ExcelReaderWriter {
         if(cell == null){
             return "";
         }
+
+        System.out.println("2: cell.getCellType()");
+        System.out.println(cell.getCellType());
         switch (cell.getCellType()) {
             case STRING:
                 return cell.getStringCellValue();
             case NUMERIC:
                 return String.valueOf(cell.getNumericCellValue());
+            case FORMULA:
+                System.out.println("2: cell.getCachedFormulaResultType()");
+                System.out.println(cell.getCachedFormulaResultType());
+                switch (cell.getCachedFormulaResultType()) {
+                    case STRING:
+                        return cell.getStringCellValue();
+                    case NUMERIC:
+                        return String.valueOf(cell.getNumericCellValue());
+                    default:
+                        return "";
+                }
             default:
                 return "";
         }
